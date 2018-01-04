@@ -51,7 +51,7 @@ It should be sufficient to change the `script/backup.fcgi`.
 Download the Backup API and extract:
 
 ```bash
-[jasmin@fornax ~]$ url="`curl -s https://api.github.com/repos/michagrandel/Python-Pre-Setup/releases/latest | grep tarball_url | cut -d '"' -f 4`"
+[jasmin@fornax ~]$ url="`curl -s https://api.github.com/repos/michagrandel/BackupApi/releases/latest | grep tarball_url | cut -d '"' -f 4`"
 [jasmin@fornax ~]$ wget $url -O BackupAPI.tar
 [jasmin@fornax ~]$ tar -xvf BackupAPI.tar > name.txt
 [jasmin@fornax ~]$ mv $(head -n 1 "name.txt") BackupAPI
