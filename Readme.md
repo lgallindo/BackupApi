@@ -1,5 +1,12 @@
 # Backup API
 
+[![PyPI](https://img.shields.io/pypi/pyversions/BackupApi.svg)]()
+![](https://img.shields.io/travis/michagrandel/BackupApi/develop.svg)
+![](https://img.shields.io/codecov/c/github/michagrandel/BackupApi/develop.svg)
+![GitHub release](https://img.shields.io/github/release/michagrandel/BackupApi.svg)
+![PyPI](https://img.shields.io/pypi/v/BackupApi.svg)
+[![license](https://img.shields.io/github/license/michagrandel/BackupApi.svg)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 This **Backup API** let's you *upload* and *store* images from your computer
 to a cloud service like Google Photos. You can use this to Backup Photos
