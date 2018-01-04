@@ -1,0 +1,127 @@
+{
+  "components": {
+    "schemas": {
+      "File": {
+        "discriminator": {
+          "propertyName": "type"
+        }, 
+        "properties": {
+          "filetype": {
+            "type": "string"
+          }, 
+          "name": {
+            "type": "string"
+          }
+        }, 
+        "required": [
+          "name", 
+          "filetype"
+        ], 
+        "type": "object"
+      }, 
+      "Photo": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/File"
+          }, 
+          {
+            "type": "object"
+          }
+        ], 
+        "description": "Photo file (e.g. JPG, PNG etc.)"
+      }, 
+      "Video": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/File"
+          }, 
+          {
+            "type": "object"
+          }
+        ], 
+        "description": "Video file (e.g. MP4, AVI, MOV, WEBM etc.)"
+      }
+    }
+  }, 
+  "info": {
+    "contact": {
+      "email": "talk@michagrandel.de", 
+      "name": "Micha Grandel", 
+      "url": "https://github.com/michagrandel/BackupApi"
+    }, 
+    "description": "Summary\n-------\n\nThis **Backup API** let's you *upload* and *store* images from your computer\nto a cloud service like Google Photos. You can use this to Backup Photos\nfrom your Computer.\n\nThe API is documented in the **(OpenAPI format)**. You can find more\ninformation about this at https://www.openapis.org/.\n\nPlease **report any bug** or **feature request** at\nhttps://github.com/michagrandel/BackupApi/issue!\n\nTerms of Service\n----------------\n\nBefore using this API, you have to agree to the Terms of Service.\nYou can read them at https://api.michagrandel.de/backup/TermsOfService.\n", 
+    "license": {
+      "name": "Apache 2.0", 
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }, 
+    "termsOfService": "https://api.michagrandel.de/backup/TermsOfService", 
+    "title": "Backup API", 
+    "version": "0.1.0"
+  }, 
+  "openapi": "3.0.0", 
+  "paths": {
+    "/": {
+      "get": {
+        "description": "This specification defines what you can do with this API. It is defined using the OpenAPI Standard\n", 
+        "operationId": "index", 
+        "summary": "Information about the API"
+      }, 
+      "responses": {
+        "200": {
+          "content": "text/html", 
+          "description": "HTML document with information about this api", 
+          "x-expected-template": "about.html"
+        }
+      }
+    }, 
+    "/upload": {
+      "post": {
+        "description": "If it is an image, it will be uploaded to the specified target host,\ne.g. Google Photos. You will get an URL in the response.\n\nIf the uploaded file is of any other type, it will be declined.\nYou will get a 400 \"Bad Request\"-Response in this case.\n", 
+        "operationId": "post_file", 
+        "parameters": [
+          {
+            "description": "File to upload", 
+            "in": "Content", 
+            "name": "file", 
+            "required": true, 
+            "type": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/Photo"
+                }, 
+                {
+                  "$ref": "#/components/schemas/Video"
+                }
+              ]
+            }
+          }
+        ], 
+        "summary": "Upload an image to the server."
+      }, 
+      "responses": {
+        "200": {
+          "content": {
+            "text/plain": {
+              "schema": {
+                "type": "application/json"
+              }
+            }
+          }, 
+          "description": "Uploaded successfully!"
+        }
+      }
+    }
+  }, 
+  "servers": [
+    {
+      "summary": "allways point to a specific version of this API", 
+      "url": "api.michagrandel.de/backup/{semver}", 
+      "variables": {
+        "semver": {
+          "default": "latest", 
+          "description": "semantic version number of an existing version of this API or \"latest\" to point to the latest version available\n"
+        }
+      }
+    }
+  ]
+}

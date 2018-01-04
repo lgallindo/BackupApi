@@ -1,0 +1,104 @@
+openapi: "3.0.0"
+info:
+    version: 0.1.0
+    title: "Backup API"
+    description: |
+      Summary
+      -------
+
+      This **Backup API** let's you *upload* and *store* images from your computer
+      to a cloud service like Google Photos. You can use this to Backup Photos
+      from your Computer.
+
+      The API is documented in the **(OpenAPI format)**. You can find more
+      information about this at https://www.openapis.org/.
+
+      Please **report any bug** or **feature request** at
+      https://github.com/michagrandel/BackupApi/issue!
+
+      Terms of Service
+      ----------------
+
+      Before using this API, you have to agree to the Terms of Service.
+      You can read them at https://api.michagrandel.de/backup/TermsOfService.
+
+    termsOfService: https://api.michagrandel.de/backup/TermsOfService
+    contact:
+      name: Micha Grandel
+      email: talk@michagrandel.de
+      url: https://github.com/michagrandel/BackupApi
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: api.michagrandel.de/backup/{semver}
+    summary: allways point to a specific version of this API
+    variables:
+      semver:
+        default: "latest"
+        description: >
+          semantic version number of an existing version of this API
+          or "latest" to point to the latest version available
+paths:
+  /:
+    get:
+      operationId: index
+      summary: Information about the API
+      description: >
+        This specification defines what you can do with this API.
+        It is defined using the OpenAPI Standard
+    responses:
+      '200':
+        description: HTML document with information about this api
+        x-expected-template: about.html
+        content: text/html
+  /upload:
+    post:
+      operationId: post_file
+      summary: Upload an image to the server.
+      description: |
+        If it is an image, it will be uploaded to the specified target host,
+        e.g. Google Photos. You will get an URL in the response.
+
+        If the uploaded file is of any other type, it will be declined.
+        You will get a 400 "Bad Request"-Response in this case.
+      parameters:
+        - name: file
+          description: File to upload
+          type:
+            oneOf:
+              - $ref: '#/components/schemas/Photo'
+              - $ref: '#/components/schemas/Video'
+          in: Content
+          required: True
+    responses:
+      '200':
+        description: Uploaded successfully!
+        content:
+          text/plain:
+            schema:
+              type: application/json
+components:
+  schemas:
+    File:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        name:
+          type: string
+        filetype:
+          type: string
+      required:
+      - name
+      - filetype
+    Photo:
+      description: Photo file (e.g. JPG, PNG etc.)
+      allOf:
+        - $ref: '#/components/schemas/File'
+        - type: object
+    Video:
+      description: Video file (e.g. MP4, AVI, MOV, WEBM etc.)
+      allOf:
+        - $ref: '#/components/schemas/File'
+        - type: object
